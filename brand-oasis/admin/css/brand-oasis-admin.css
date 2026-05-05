@@ -1,0 +1,96 @@
+/* Brand Oasis Admin Styles */
+
+.brand-oasis-wrap {
+    max-width: 1200px;
+}
+
+.brand-oasis-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.brand-oasis-container.full-width {
+    display: block;
+}
+
+.brand-oasis-sidebar {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 4px;
+}
+
+.brand-oasis-preview {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-oasis-preview h3 {
+    margin-top: 0;
+}
+
+.iframe-container {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 600px;
+}
+
+.iframe-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.nav-tab-wrapper {
+    margin-bottom: 0;
+}
+
+.image-preview-wrapper {
+    margin-bottom: 10px;
+}
+
+/* Presets Grid */
+.bo-presets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.bo-preset-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.bo-preset-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.bo-preset-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
