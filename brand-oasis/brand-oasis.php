@@ -3,7 +3,7 @@
  * Plugin Name:       Brand Oasis
  * Plugin URI:        https://example.com/brand-oasis
  * Description:       A modern branding/customization plugin for WordPress admin experience.
- * Version:           1.0.0
+ * Version:           2.0.0
  * Author:            Your Name
  * Author URI:        https://example.com/
  * License:           GPL-2.0+
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'BRAND_OASIS_VERSION', '1.0.0' );
+define( 'BRAND_OASIS_VERSION', '2.0.0' );
 
 /**
  * Plugin directory path.

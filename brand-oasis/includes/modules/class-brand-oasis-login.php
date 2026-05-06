@@ -52,8 +52,21 @@ class Brand_Oasis_Login {
 		$bg_size = $this->get_setting( 'bg_size', 'cover' );
 		$bg_repeat = $this->get_setting( 'bg_repeat', 'no-repeat' );
 
+        $enable_gradient = $this->get_setting( 'enable_gradient_bg', '0' );
+        $grad_type = $this->get_setting( 'gradient_type', 'linear' );
+        $grad_angle = $this->get_setting( 'gradient_angle', '135' );
+        $grad_color_1 = $this->get_setting( 'gradient_color_1', '#667eea' );
+        $grad_color_2 = $this->get_setting( 'gradient_color_2', '#764ba2' );
+
 		$body_css = "background-color: {$bg_color} !important;";
-		if ( $bg_image ) {
+
+        if ( $enable_gradient === '1' ) {
+            if ( $grad_type === 'radial' ) {
+                $body_css .= "background-image: radial-gradient(circle, {$grad_color_1}, {$grad_color_2}) !important;";
+            } else {
+                $body_css .= "background-image: linear-gradient({$grad_angle}deg, {$grad_color_1}, {$grad_color_2}) !important;";
+            }
+        } elseif ( $bg_image ) {
 			$body_css .= "
 				background-image: url('{$bg_image}') !important;
 				background-position: {$bg_position} !important;
@@ -61,6 +74,7 @@ class Brand_Oasis_Login {
 				background-repeat: {$bg_repeat} !important;
 			";
 		}
+
 		$css .= "body.login { {$body_css} }";
 
         // Overlay
@@ -84,6 +98,8 @@ class Brand_Oasis_Login {
         $form_opacity = $this->get_setting( 'form_opacity', '1' );
         $form_radius = $this->get_setting( 'form_radius', '0' );
         $form_shadow = $this->get_setting( 'form_shadow', '0 1px 3px rgba(0,0,0,.13)' );
+        $form_border_color = $this->get_setting( 'form_border_color', 'transparent' );
+        $form_border_width = $this->get_setting( 'form_border_width', '0' );
 
         // Convert hex to rgb for opacity
         if ( $form_opacity < 1 && preg_match('/^#([a-f0-9]{3}){1,2}$/i', $form_bg) ) {
@@ -95,6 +111,7 @@ class Brand_Oasis_Login {
             background-color: {$form_bg} !important;
             border-radius: {$form_radius}px !important;
             box-shadow: {$form_shadow} !important;
+            border: {$form_border_width}px solid {$form_border_color} !important;
         }";
 
         // Input Styling
@@ -105,17 +122,75 @@ class Brand_Oasis_Login {
 
         // Button Styling
         $btn_bg = $this->get_setting( 'btn_bg', '#2271b1' );
+        $btn_hover_bg = $this->get_setting( 'btn_hover_bg', '#135e96' );
         $btn_color = $this->get_setting( 'btn_color', '#ffffff' );
+        $btn_hover_color = $this->get_setting( 'btn_hover_color', '#ffffff' );
+
         $btn_radius = $this->get_setting( 'btn_radius', '3' );
-        $css .= ".wp-core-ui .button-primary {
-            background-color: {$btn_bg} !important;
-            border-color: {$btn_bg} !important;
+        $btn_border_width = $this->get_setting( 'btn_border_width', '0' );
+        $btn_border_color = $this->get_setting( 'btn_border_color', 'transparent' );
+
+        $btn_font_weight = $this->get_setting( 'btn_font_weight', '400' );
+        $btn_text_transform = $this->get_setting( 'btn_text_transform', 'none' );
+        $btn_letter_spacing = $this->get_setting( 'btn_letter_spacing', '0' );
+
+        $btn_width = $this->get_setting( 'btn_width', 'auto' );
+        $btn_padding = $this->get_setting( 'btn_padding', '0 10px 1px' );
+        $btn_transition_speed = $this->get_setting( 'btn_transition_speed', '0.3' );
+
+        $btn_glow_color = $this->get_setting( 'btn_glow_color', '' );
+        $btn_animation = $this->get_setting( 'btn_animation', 'none' );
+
+        $btn_base_css = "
+            background: {$btn_bg} !important;
             color: {$btn_color} !important;
+            width: {$btn_width} !important;
+            padding: {$btn_padding} !important;
             border-radius: {$btn_radius}px !important;
+            border: {$btn_border_width}px solid {$btn_border_color} !important;
+            font-weight: {$btn_font_weight} !important;
+            text-transform: {$btn_text_transform} !important;
+            letter-spacing: {$btn_letter_spacing}px !important;
+            transition: all {$btn_transition_speed}s ease !important;
+        ";
+
+        if ( $btn_glow_color ) {
+            $btn_base_css .= "box-shadow: 0 0 10px {$btn_glow_color} !important;";
         }
-        .wp-core-ui .button-primary:hover {
-            opacity: 0.9 !important;
-        }";
+
+        $css .= ".wp-core-ui .button-primary { {$btn_base_css} }";
+
+        // Button Hover
+        $btn_hover_css = "
+            background: {$btn_hover_bg} !important;
+            color: {$btn_hover_color} !important;
+            border-color: {$btn_border_color} !important;
+        ";
+
+        if ( $btn_glow_color ) {
+            $btn_hover_css .= "box-shadow: 0 0 20px {$btn_glow_color} !important;";
+        }
+
+        if ( $btn_animation === 'scale' ) {
+            $btn_hover_css .= "transform: scale(1.05) !important;";
+        } elseif ( $btn_animation === 'lift' ) {
+            $btn_hover_css .= "transform: translateY(-2px) !important; box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;";
+        }
+
+        $css .= ".wp-core-ui .button-primary:hover { {$btn_hover_css} }";
+
+        if ( $btn_animation === 'pulse' ) {
+            $css .= "
+                @keyframes boPulseGlow {
+                    0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+                    70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+                    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+                }
+                .wp-core-ui .button-primary:hover {
+                    animation: boPulseGlow 1.5s infinite !important;
+                }
+            ";
+        }
 
         // Typography
         $font_family = $this->get_setting( 'font_family' );

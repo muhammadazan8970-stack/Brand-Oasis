@@ -69,7 +69,37 @@ function get_bo_login_setting( $settings, $key, $default = '' ) {
                     <table class="form-table">
                         <tr>
                             <th scope="row">Background Color</th>
-                            <td><input type="text" name="brand_oasis_login_settings[bg_color]" value="<?php echo get_bo_login_setting($settings, 'bg_color', '#f1f1f1'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="css" data-preview-target="body.login" data-preview-prop="background-color" /></td>
+                            <td><input type="text" name="brand_oasis_login_settings[bg_color]" value="<?php echo get_bo_login_setting($settings, 'bg_color', '#f1f1f1'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="bg-color" data-preview-target="body.login" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Enable Gradient Background</th>
+                            <td>
+                                <label>
+                                    <input type="checkbox" name="brand_oasis_login_settings[enable_gradient_bg]" value="1" <?php checked( get_bo_login_setting($settings, 'enable_gradient_bg'), '1' ); ?> class="bo-preview-trigger" data-preview-type="bg-gradient" />
+                                    Yes
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="bo-gradient-settings">
+                            <th scope="row">Gradient Type</th>
+                            <td>
+                                <select name="brand_oasis_login_settings[gradient_type]" class="bo-preview-trigger" data-preview-type="bg-gradient">
+                                    <option value="linear" <?php selected( get_bo_login_setting($settings, 'gradient_type'), 'linear' ); ?>>Linear</option>
+                                    <option value="radial" <?php selected( get_bo_login_setting($settings, 'gradient_type'), 'radial' ); ?>>Radial</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="bo-gradient-settings">
+                            <th scope="row">Gradient Angle (deg)</th>
+                            <td><input type="number" name="brand_oasis_login_settings[gradient_angle]" value="<?php echo get_bo_login_setting($settings, 'gradient_angle', '135'); ?>" class="regular-text bo-preview-trigger" data-preview-type="bg-gradient" /></td>
+                        </tr>
+                        <tr class="bo-gradient-settings">
+                            <th scope="row">Gradient Color 1</th>
+                            <td><input type="text" name="brand_oasis_login_settings[gradient_color_1]" value="<?php echo get_bo_login_setting($settings, 'gradient_color_1', '#667eea'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="bg-gradient" /></td>
+                        </tr>
+                        <tr class="bo-gradient-settings">
+                            <th scope="row">Gradient Color 2</th>
+                            <td><input type="text" name="brand_oasis_login_settings[gradient_color_2]" value="<?php echo get_bo_login_setting($settings, 'gradient_color_2', '#764ba2'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="bg-gradient" /></td>
                         </tr>
                         <tr>
                             <th scope="row">Background Image</th>
@@ -141,16 +171,93 @@ function get_bo_login_setting( $settings, $key, $default = '' ) {
                             <td><input type="text" name="brand_oasis_login_settings[form_shadow]" value="<?php echo get_bo_login_setting($settings, 'form_shadow', '0 1px 3px rgba(0,0,0,.13)'); ?>" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".login form" data-preview-prop="box-shadow" /></td>
                         </tr>
                         <tr>
+                            <th scope="row">Form Border Color</th>
+                            <td><input type="text" name="brand_oasis_login_settings[form_border_color]" value="<?php echo get_bo_login_setting($settings, 'form_border_color', 'transparent'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="css" data-preview-target=".login form" data-preview-prop="border-color" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Form Border Width (px)</th>
+                            <td><input type="number" name="brand_oasis_login_settings[form_border_width]" value="<?php echo get_bo_login_setting($settings, 'form_border_width', '0'); ?>" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".login form" data-preview-prop="border-width" data-preview-unit="px" /></td>
+                        </tr>
+
+                        <!-- NEW BUTTON SETTINGS -->
+                        <tr>
+                            <th scope="row" colspan="2"><h3>Button Customization</h3></th>
+                        </tr>
+                        <tr>
                             <th scope="row">Button Background Color</th>
                             <td><input type="text" name="brand_oasis_login_settings[btn_bg]" value="<?php echo get_bo_login_setting($settings, 'btn_bg', '#2271b1'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="background-color" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Hover Background</th>
+                            <td><input type="text" name="brand_oasis_login_settings[btn_hover_bg]" value="<?php echo get_bo_login_setting($settings, 'btn_hover_bg', '#135e96'); ?>" class="bo-color-picker" /></td>
                         </tr>
                         <tr>
                             <th scope="row">Button Text Color</th>
                             <td><input type="text" name="brand_oasis_login_settings[btn_color]" value="<?php echo get_bo_login_setting($settings, 'btn_color', '#ffffff'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="color" /></td>
                         </tr>
                         <tr>
+                            <th scope="row">Button Hover Text Color</th>
+                            <td><input type="text" name="brand_oasis_login_settings[btn_hover_color]" value="<?php echo get_bo_login_setting($settings, 'btn_hover_color', '#ffffff'); ?>" class="bo-color-picker" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Typography</th>
+                            <td>
+                                <select name="brand_oasis_login_settings[btn_font_weight]" class="bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="font-weight">
+                                    <option value="400" <?php selected( get_bo_login_setting($settings, 'btn_font_weight'), '400' ); ?>>Normal</option>
+                                    <option value="600" <?php selected( get_bo_login_setting($settings, 'btn_font_weight'), '600' ); ?>>Semi-Bold</option>
+                                    <option value="700" <?php selected( get_bo_login_setting($settings, 'btn_font_weight'), '700' ); ?>>Bold</option>
+                                </select>
+                                <select name="brand_oasis_login_settings[btn_text_transform]" class="bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="text-transform">
+                                    <option value="none" <?php selected( get_bo_login_setting($settings, 'btn_text_transform'), 'none' ); ?>>Normal</option>
+                                    <option value="uppercase" <?php selected( get_bo_login_setting($settings, 'btn_text_transform'), 'uppercase' ); ?>>Uppercase</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Letter Spacing (px)</th>
+                            <td><input type="number" name="brand_oasis_login_settings[btn_letter_spacing]" value="<?php echo get_bo_login_setting($settings, 'btn_letter_spacing', '0'); ?>" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="letter-spacing" data-preview-unit="px" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Width</th>
+                            <td><input type="text" name="brand_oasis_login_settings[btn_width]" value="<?php echo get_bo_login_setting($settings, 'btn_width', 'auto'); ?>" placeholder="e.g. 100% or 200px" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="width" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Padding (px)</th>
+                            <td><input type="text" name="brand_oasis_login_settings[btn_padding]" value="<?php echo get_bo_login_setting($settings, 'btn_padding', '0 10px 1px'); ?>" placeholder="e.g. 10px 20px" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="padding" /></td>
+                        </tr>
+                        <tr>
                             <th scope="row">Button Border Radius (px)</th>
                             <td><input type="number" name="brand_oasis_login_settings[btn_radius]" value="<?php echo get_bo_login_setting($settings, 'btn_radius', '3'); ?>" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="border-radius" data-preview-unit="px" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Border Color</th>
+                            <td><input type="text" name="brand_oasis_login_settings[btn_border_color]" value="<?php echo get_bo_login_setting($settings, 'btn_border_color', 'transparent'); ?>" class="bo-color-picker bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="border-color" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Border Width (px)</th>
+                            <td><input type="number" name="brand_oasis_login_settings[btn_border_width]" value="<?php echo get_bo_login_setting($settings, 'btn_border_width', '0'); ?>" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="border-width" data-preview-unit="px" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Glow Color</th>
+                            <td><input type="text" name="brand_oasis_login_settings[btn_glow_color]" value="<?php echo get_bo_login_setting($settings, 'btn_glow_color', ''); ?>" class="bo-color-picker" placeholder="e.g. #39ff14" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Button Hover Animation</th>
+                            <td>
+                                <select name="brand_oasis_login_settings[btn_animation]">
+                                    <option value="none" <?php selected( get_bo_login_setting($settings, 'btn_animation'), 'none' ); ?>>None</option>
+                                    <option value="scale" <?php selected( get_bo_login_setting($settings, 'btn_animation'), 'scale' ); ?>>Scale</option>
+                                    <option value="pulse" <?php selected( get_bo_login_setting($settings, 'btn_animation'), 'pulse' ); ?>>Pulse Glow</option>
+                                    <option value="lift" <?php selected( get_bo_login_setting($settings, 'btn_animation'), 'lift' ); ?>>Lift / Shadow</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Transition Speed (s)</th>
+                            <td><input type="number" step="0.1" name="brand_oasis_login_settings[btn_transition_speed]" value="<?php echo get_bo_login_setting($settings, 'btn_transition_speed', '0.3'); ?>" class="regular-text bo-preview-trigger" data-preview-type="css" data-preview-target=".wp-core-ui .button-primary" data-preview-prop="transition" data-preview-unit="s ease" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" colspan="2"><h3>Input Fields</h3></th>
                         </tr>
                         <tr>
                             <th scope="row">Input Border Radius (px)</th>
@@ -203,23 +310,50 @@ function get_bo_login_setting( $settings, $key, $default = '' ) {
                 </div>
 
                 <div class="tab-content" id="tab-presets">
-                    <div class="bo-presets-grid">
-                        <div class="bo-preset-card">
-                            <h3>Travel Theme</h3>
-                            <button type="button" class="button bo-apply-preset" data-preset="travel">Apply Preset</button>
+
+                    <div class="bo-preset-toolbar">
+                        <input type="text" id="bo-preset-search" placeholder="Search presets..." class="regular-text" />
+                        <div class="bo-preset-categories">
+                            <!-- Categories populated via JS or PHP -->
+                            <span class="bo-category-pill active" data-filter="all">All</span>
+                            <?php
+                                $presets_file = dirname( dirname( dirname( __FILE__ ) ) ) . '/presets/login-presets.php';
+                                $presets = file_exists( $presets_file ) ? include $presets_file : array();
+                                $categories = array();
+                                foreach($presets as $p) {
+                                    if(isset($p['template_category']) && !in_array($p['template_category'], $categories)) {
+                                        $categories[] = $p['template_category'];
+                                    }
+                                }
+                                sort($categories);
+                                foreach($categories as $cat) {
+                                    echo '<span class="bo-category-pill" data-filter="'.esc_attr($cat).'">'.esc_html($cat).'</span>';
+                                }
+                            ?>
                         </div>
-                        <div class="bo-preset-card">
-                            <h3>Orange Flat</h3>
-                            <button type="button" class="button bo-apply-preset" data-preset="orange">Apply Preset</button>
+                    </div>
+
+                    <div class="bo-presets-gallery">
+                        <?php foreach($presets as $key => $preset) :
+                            $name = isset($preset['template_name']) ? $preset['template_name'] : ucfirst($key);
+                            $category = isset($preset['template_category']) ? $preset['template_category'] : 'Uncategorized';
+                            $thumbnail = !empty($preset['thumbnail']) ? $preset['thumbnail'] : '';
+                        ?>
+                        <div class="bo-preset-item" data-category="<?php echo esc_attr($category); ?>" data-name="<?php echo esc_attr(strtolower($name)); ?>">
+                            <div class="bo-preset-thumbnail" style="<?php echo $thumbnail ? 'background-image: url('.esc_url($thumbnail).');' : 'background: linear-gradient(135deg, #f5f7fa, #c3cfe2);'; ?>">
+                                <?php if(!$thumbnail): ?>
+                                    <span class="bo-preset-placeholder"><?php echo esc_html($name); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="bo-preset-info">
+                                <h4><?php echo esc_html($name); ?></h4>
+                                <span class="bo-preset-cat-label"><?php echo esc_html($category); ?></span>
+                            </div>
+                            <div class="bo-preset-actions">
+                                <button type="button" class="button button-primary bo-apply-preset" data-preset="<?php echo esc_attr($key); ?>">Apply Theme</button>
+                            </div>
                         </div>
-                        <div class="bo-preset-card">
-                            <h3>Glassmorphism</h3>
-                            <button type="button" class="button bo-apply-preset" data-preset="glass">Apply Preset</button>
-                        </div>
-                        <div class="bo-preset-card">
-                            <h3>Dark Modern</h3>
-                            <button type="button" class="button bo-apply-preset" data-preset="dark">Apply Preset</button>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
