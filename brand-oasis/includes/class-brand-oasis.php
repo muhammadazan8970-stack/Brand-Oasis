@@ -24,6 +24,9 @@ class Brand_Oasis {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-brand-oasis-i18n.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-brand-oasis-admin.php';
 
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/core/class-brand-oasis-sanitizer.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/core/class-brand-oasis-settings-registry.php';
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-brand-oasis-login.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-brand-oasis-dashboard.php';
 

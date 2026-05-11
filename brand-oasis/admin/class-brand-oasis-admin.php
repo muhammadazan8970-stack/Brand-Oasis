@@ -78,30 +78,46 @@ class Brand_Oasis_Admin {
 		register_setting(
 			'brand_oasis_login_options',
 			'brand_oasis_login_settings',
-			array( $this, 'sanitize_settings' )
+			array( $this, 'sanitize_login_settings' )
 		);
 
 		// Admin Dashboard Customizer Settings
 		register_setting(
 			'brand_oasis_admin_options',
 			'brand_oasis_admin_settings',
-			array( $this, 'sanitize_settings' )
+			array( $this, 'sanitize_admin_settings' )
 		);
 	}
 
-	public function sanitize_settings( $input ) {
-		$sanitized = array();
+	public function sanitize_login_settings( $input ) {
+		$schema = Brand_Oasis_Settings_Registry::get_login_schema();
+        $types = Brand_Oasis_Settings_Registry::get_schema_types( $schema );
+        return $this->sanitize_settings_by_schema( $input, $types );
+	}
+
+    public function sanitize_admin_settings( $input ) {
+		$schema = Brand_Oasis_Settings_Registry::get_admin_schema();
+        $types = Brand_Oasis_Settings_Registry::get_schema_types( $schema );
+        return $this->sanitize_settings_by_schema( $input, $types );
+	}
+
+    private function sanitize_settings_by_schema( $input, $types ) {
+        $sanitized = array();
 		if ( ! is_array( $input ) ) return $sanitized;
 
 		foreach ( $input as $key => $value ) {
+            // Check if it's a nested array (e.g. some complex future setting)
 			if ( is_array( $value ) ) {
-                $sanitized[$key] = $this->sanitize_settings( $value );
+                // If it's an array but not mapped in our simple flat schema, fall back to aggressive text sanitization recursively
+                $sanitized[$key] = $this->sanitize_settings_by_schema( $value, $types );
             } else {
-                $sanitized[$key] = sanitize_text_field( $value );
+                // Determine type from registry or fallback to text to preserve backward compatibility for old unmapped settings
+                $type = isset( $types[$key] ) ? $types[$key] : 'text';
+                $sanitized[$key] = Brand_Oasis_Sanitizer::sanitize( $type, $value );
             }
 		}
 		return $sanitized;
-	}
+    }
 
 	public function display_login_customizer_page() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/brand-oasis-login-display.php';
@@ -117,7 +133,7 @@ class Brand_Oasis_Admin {
             wp_send_json_error( 'Unauthorized' );
         }
 
-        $preset_key = isset( $_POST['preset'] ) ? sanitize_text_field( $_POST['preset'] ) : '';
+        $preset_key = isset( $_POST['preset'] ) ? Brand_Oasis_Sanitizer::sanitize( 'text', $_POST['preset'] ) : '';
         $presets_file = plugin_dir_path( dirname( __FILE__ ) ) . 'presets/login-presets.php';
 
         if ( file_exists( $presets_file ) ) {
@@ -136,7 +152,7 @@ class Brand_Oasis_Admin {
             wp_send_json_error( 'Unauthorized' );
         }
 
-        $type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'login';
+        $type = isset( $_POST['type'] ) ? Brand_Oasis_Sanitizer::sanitize( 'text', $_POST['type'] ) : 'login';
         $option_name = $type === 'login' ? 'brand_oasis_login_settings' : 'brand_oasis_admin_settings';
         $settings = get_option( $option_name, array() );
 
@@ -149,13 +165,20 @@ class Brand_Oasis_Admin {
             wp_send_json_error( 'Unauthorized' );
         }
 
-        $type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'login';
+        $type = isset( $_POST['type'] ) ? Brand_Oasis_Sanitizer::sanitize( 'text', $_POST['type'] ) : 'login';
         $json = isset( $_POST['json'] ) ? stripslashes( $_POST['json'] ) : '';
 
         $data = json_decode( $json, true );
         if ( json_last_error() === JSON_ERROR_NONE && is_array( $data ) ) {
             $option_name = $type === 'login' ? 'brand_oasis_login_settings' : 'brand_oasis_admin_settings';
-            update_option( $option_name, $this->sanitize_settings( $data ) );
+
+            if ( $type === 'login' ) {
+                $sanitized_data = $this->sanitize_login_settings( $data );
+            } else {
+                $sanitized_data = $this->sanitize_admin_settings( $data );
+            }
+
+            update_option( $option_name, $sanitized_data );
             wp_send_json_success( 'Imported successfully' );
         } else {
             wp_send_json_error( 'Invalid JSON' );
