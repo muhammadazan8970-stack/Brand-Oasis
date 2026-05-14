@@ -58,6 +58,7 @@ class Brand_Oasis {
 		$this->loader->add_action( 'wp_ajax_brand_oasis_apply_preset', $plugin_admin, 'ajax_apply_preset' );
 		$this->loader->add_action( 'wp_ajax_brand_oasis_export_settings', $plugin_admin, 'ajax_export_settings' );
 		$this->loader->add_action( 'wp_ajax_brand_oasis_import_settings', $plugin_admin, 'ajax_import_settings' );
+		$this->loader->add_action( 'wp_ajax_brand_oasis_preview_css', $plugin_admin, 'ajax_preview_css' );
 
 		// Login Customizer module
 		$this->loader->add_action( 'login_enqueue_scripts', $plugin_login, 'login_enqueue_scripts' );

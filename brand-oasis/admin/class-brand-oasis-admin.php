@@ -31,7 +31,9 @@ class Brand_Oasis_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/brand-oasis-admin.js', array( 'jquery', 'wp-color-picker' ), $this->version, false );
 
         if ( $hook === 'brand-oasis_page_brand-oasis-login' ) {
-            wp_enqueue_script( $this->plugin_name . '-login-preview', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/brand-oasis-login-preview.js', array( 'jquery' ), $this->version, false );
+            wp_enqueue_script( $this->plugin_name . '-preview-renderer', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/preview/preview-renderer.js', array( 'jquery' ), $this->version, false );
+            wp_enqueue_script( $this->plugin_name . '-preview-events', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/preview/preview-events.js', array( 'jquery', 'wp-color-picker', $this->plugin_name . '-preview-renderer' ), $this->version, false );
+            wp_enqueue_script( $this->plugin_name . '-template-preview', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/preview/template-preview.js', array( 'jquery', $this->plugin_name . '-preview-events' ), $this->version, false );
         }
 
 		wp_localize_script( $this->plugin_name, 'brandOasisAdmin', array(
@@ -157,6 +159,22 @@ class Brand_Oasis_Admin {
         $settings = get_option( $option_name, array() );
 
         wp_send_json_success( json_encode( $settings ) );
+    }
+
+    public function ajax_preview_css() {
+        check_ajax_referer( 'brand-oasis-nonce', 'nonce' );
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( 'Unauthorized' );
+        }
+
+        $raw_settings = isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : array();
+        $settings = $this->sanitize_login_settings( $raw_settings );
+
+        // Pass temporary settings to a new instance of the Login Customizer
+        $plugin_login = new Brand_Oasis_Login( $this->plugin_name, $this->version, $settings );
+        $css_string = $plugin_login->generate_css_string();
+
+        wp_send_json_success( $css_string );
     }
 
     public function ajax_import_settings() {

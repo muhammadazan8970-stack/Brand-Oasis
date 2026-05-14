@@ -6,10 +6,14 @@ class Brand_Oasis_Login {
 	private $version;
 	private $settings;
 
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $custom_settings = null ) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->settings = get_option( 'brand_oasis_login_settings', array() );
+		if ( is_array( $custom_settings ) ) {
+            $this->settings = $custom_settings;
+        } else {
+            $this->settings = get_option( 'brand_oasis_login_settings', array() );
+        }
 	}
 
 	public function login_enqueue_scripts() {
@@ -27,7 +31,19 @@ class Brand_Oasis_Login {
 	}
 
 	public function login_head() {
-		$css = '<style id="brand-oasis-login-css">';
+        $css_string = $this->generate_css_string();
+		echo '<style id="brand-oasis-login-css">' . $css_string . '</style>';
+
+        // Output custom google font if needed
+        $font_family = $this->get_setting( 'font_family' );
+        if ( $font_family ) {
+            $clean_font = trim(explode(',', $font_family)[0], "'\"");
+            echo "<link href='https://fonts.googleapis.com/css2?family=" . urlencode($clean_font) . ":wght@400;600&display=swap' rel='stylesheet'>";
+        }
+	}
+
+    public function generate_css_string() {
+        $css = '';
 
         // Logo
 		$logo_url = $this->get_setting( 'logo_url' );
@@ -217,15 +233,7 @@ class Brand_Oasis_Login {
             $css .= "#login { margin-right: 5% !important; margin-left: auto !important; }";
         }
 
-		$css .= '</style>';
-
-        // Output custom google font if needed
-        if ( $font_family ) {
-            $clean_font = trim(explode(',', $font_family)[0], "'\"");
-            echo "<link href='https://fonts.googleapis.com/css2?family=" . urlencode($clean_font) . ":wght@400;600&display=swap' rel='stylesheet'>";
-        }
-
-		echo $css;
+		return $css;
 	}
 
 	private function get_setting( $key, $default = '' ) {
