@@ -73,8 +73,33 @@ class Brand_Oasis_Dashboard {
         $rounded_ui = $this->get_setting( 'rounded_ui', '0' );
         if ( $rounded_ui === '1' ) {
             $css .= "
-                .postbox, .welcome-panel, .card, table.widefat, .button { border-radius: 8px !important; }
+                .postbox, .welcome-panel, .card, table.widefat { border-radius: 8px !important; }
                 input[type=text], input[type=search], input[type=password], input[type=email], input[type=number], textarea, select { border-radius: 4px !important; }
+            ";
+        }
+
+        $button_radius = $this->get_setting( 'button_radius', '4' );
+        if ( $button_radius !== '4' ) {
+            $css .= "
+                .button, .button-primary, .button-secondary { border-radius: {$button_radius}px !important; }
+            ";
+        }
+
+        $container_width = $this->get_setting( 'container_width', '100%' );
+        if ( $container_width !== '100%' ) {
+            $css .= "
+                #wpbody-content { max-width: {$container_width} !important; margin: 0 auto !important; }
+            ";
+        }
+
+        $accent_color = $this->get_setting( 'accent_color', '#2271b1' );
+        if ( $accent_color !== '#2271b1' ) {
+            $css .= "
+                a { color: {$accent_color}; }
+                a:hover, a:active, a:focus { color: {$accent_color}; }
+                .button-primary { background: {$accent_color} !important; border-color: {$accent_color} !important; }
+                .button-primary:hover, .button-primary:focus, .button-primary:active { background: {$accent_color} !important; opacity: 0.9 !important; border-color: {$accent_color} !important; }
+                .wp-core-ui .button-primary { background: {$accent_color} !important; border-color: {$accent_color} !important; }
             ";
         }
 
@@ -83,15 +108,6 @@ class Brand_Oasis_Dashboard {
             $css .= ".postbox, .welcome-panel, .card, table.widefat { box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; border: none !important; }";
         } elseif ( $shadow_intensity === 'strong' ) {
             $css .= ".postbox, .welcome-panel, .card, table.widefat { box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; border: none !important; }";
-        }
-
-        $sidebar_width = $this->get_setting( 'sidebar_width', '160' );
-        if ( $sidebar_width !== '160' ) {
-            $css .= "
-                #adminmenu, #adminmenuwrap, #adminmenuback { width: {$sidebar_width}px !important; }
-                #wpcontent, #wpfooter { margin-left: {$sidebar_width}px !important; }
-                #adminmenu .wp-submenu { left: {$sidebar_width}px !important; }
-            ";
         }
 
         // Hide Branding
