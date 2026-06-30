@@ -97,7 +97,9 @@ class Brand_Oasis_Settings_Registry {
             // UI Options
             array( 'id' => 'rounded_ui', 'type' => 'checkbox', 'default' => '0' ),
             array( 'id' => 'shadow_intensity', 'type' => 'select', 'default' => 'none' ),
-            array( 'id' => 'sidebar_width', 'type' => 'number', 'default' => '160' ),
+            array( 'id' => 'button_radius', 'type' => 'number', 'default' => '4' ),
+            array( 'id' => 'container_width', 'type' => 'text', 'default' => '100%' ),
+            array( 'id' => 'accent_color', 'type' => 'color', 'default' => '#2271b1' ),
 
             // Dark Mode
             array( 'id' => 'enable_dark_mode', 'type' => 'checkbox', 'default' => '0' ),

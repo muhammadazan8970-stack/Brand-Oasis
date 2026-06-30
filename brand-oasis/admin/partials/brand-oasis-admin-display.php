@@ -131,8 +131,16 @@ function get_bo_admin_setting( $settings, $key, $default = '' ) {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">Sidebar Width (px)</th>
-                        <td><input type="number" name="brand_oasis_admin_settings[sidebar_width]" value="<?php echo get_bo_admin_setting($settings, 'sidebar_width', '160'); ?>" class="regular-text" /></td>
+                        <th scope="row">Button Border Radius (px)</th>
+                        <td><input type="number" name="brand_oasis_admin_settings[button_radius]" value="<?php echo get_bo_admin_setting($settings, 'button_radius', '4'); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Container Width</th>
+                        <td><input type="text" name="brand_oasis_admin_settings[container_width]" value="<?php echo get_bo_admin_setting($settings, 'container_width', '100%'); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Accent Color</th>
+                        <td><input type="text" name="brand_oasis_admin_settings[accent_color]" value="<?php echo get_bo_admin_setting($settings, 'accent_color', '#2271b1'); ?>" class="bo-color-picker" /></td>
                     </tr>
                 </table>
             </div>
